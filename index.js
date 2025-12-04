@@ -30,6 +30,7 @@ async function run() {
     const database = client.db('pawmartList');
     const listCollection = database.collection('lists');
 
+    // post or send data
     app.post('/addlist', async (req, res) => {
       const requestBody = req.body;
       //console.log(requestBody);
@@ -38,6 +39,14 @@ async function run() {
       const result = await listCollection.insertOne(requestBody);
       res.send({ message: "Received successfully", data: requestBody });
     });
+    
+
+   // get List data
+    app.get('/addlist', async (req, res) => {
+      const result = await listCollection.find().toArray();
+      res.send(result);
+    })
+
 
 
 
