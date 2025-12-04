@@ -2,11 +2,12 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-const port =5000;
+const port = 5000;
 
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 
 
 const uri = "mongodb+srv://pawmart:RgrxZ1ELaW1tNV9y@cluster0.5ejbswi.mongodb.net/?appName=Cluster0";
@@ -22,12 +23,15 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    
+
     await client.connect();
 
-    app.post('/addlistings', async(req, res) => {
-      
-    })
+    app.post('/addlist', async (req, res) => {
+      const requestBody = req.body;
+      console.log(requestBody);
+      res.send({ message: "Received successfully", data: requestBody });
+    });
+
 
 
     await client.db("admin").command({ ping: 1 });
@@ -42,11 +46,11 @@ run().catch(console.dir);
 
 
 app.get('/', (req, res) => {
-    res.send('Hello from server side - PawMart');
+  res.send('Hello from server side of PawCat');
 })
 
-app.listen(port, ()=>{
-    console.log(`Server is running on port: ${port}`);
+app.listen(port, () => {
+  console.log(`Server is running on port: ${port}`);
 })
 
 
