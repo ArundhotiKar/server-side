@@ -26,14 +26,16 @@ async function run() {
 
     await client.connect();
 
-  // database collection 
-  // const database = client.db('pawmartList');
-  // const listCollection = database.collection('lists');
+    // database collection 
+    const database = client.db('pawmartList');
+    const listCollection = database.collection('lists');
 
     app.post('/addlist', async (req, res) => {
       const requestBody = req.body;
-      console.log(requestBody);
-
+      //console.log(requestBody);
+      const date = new Date();
+     requestBody.createdAt = date;
+      const result = await listCollection.insertOne(requestBody);
       res.send({ message: "Received successfully", data: requestBody });
     });
 
