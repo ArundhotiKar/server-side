@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 
-const uri = "mongodb+srv://pawmart:RgrxZ1ELaW1tNV9y@cluster0.5ejbswi.mongodb.net/?appName=Cluster0";
+const uri = process.env.MONGO_URL;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -26,9 +26,14 @@ async function run() {
 
     await client.connect();
 
+  // database collection 
+  // const database = client.db('pawmartList');
+  // const listCollection = database.collection('lists');
+
     app.post('/addlist', async (req, res) => {
       const requestBody = req.body;
       console.log(requestBody);
+
       res.send({ message: "Received successfully", data: requestBody });
     });
 
