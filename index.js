@@ -65,6 +65,24 @@ async function run() {
 
     })
 
+    app.put('/update/:id', async(req, res) => {
+      const data = req.body;
+     
+       const id = req.params;
+       const query = {_id: new ObjectId(id)}
+
+       const updateList = {
+        $set: data
+       }
+
+       const result= await listCollection.updateOne(query, updateList)
+
+       res.send(result);
+
+      console.log(data);
+  
+    })
+
 
 
 
