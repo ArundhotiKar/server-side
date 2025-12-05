@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
@@ -39,12 +39,30 @@ async function run() {
       const result = await listCollection.insertOne(requestBody);
       res.send({ message: "Received successfully", data: requestBody });
     });
-    
+
 
    // get List data
     app.get('/addlist', async (req, res) => {
       const result = await listCollection.find().toArray();
       res.send(result);
+    })
+
+    app.get('/addlist/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await listCollection.findOne(query);
+      res.send(result);
+    })
+
+
+    app.get('/myadded-lists', async(req, res) => {
+      const {email} = req.query;
+      
+      const query = {email: email};
+      const result = await listCollection.find(query).toArray();
+
+      res.send(result);
+
     })
 
 
