@@ -35,13 +35,13 @@ async function run() {
       const requestBody = req.body;
       //console.log(requestBody);
       const date = new Date();
-     requestBody.createdAt = date;
+      requestBody.createdAt = date;
       const result = await listCollection.insertOne(requestBody);
       res.send({ message: "Received successfully", data: requestBody });
     });
 
 
-   // get List data
+    // get List data
     app.get('/addlist', async (req, res) => {
       const result = await listCollection.find().toArray();
       res.send(result);
@@ -55,34 +55,45 @@ async function run() {
     })
 
 
-    app.get('/myadded-lists', async(req, res) => {
-      const {email} = req.query;
-      
-      const query = {email: email};
+    app.get('/myadded-lists', async (req, res) => {
+      const { email } = req.query;
+
+      const query = { email: email };
       const result = await listCollection.find(query).toArray();
 
       res.send(result);
 
     })
 
-    app.put('/update/:id', async(req, res) => {
+    app.put('/update/:id', async (req, res) => {
       const data = req.body;
-     
-       const id = req.params;
-       const query = {_id: new ObjectId(id)}
 
-       const updateList = {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+
+      const updateList = {
         $set: data
-       }
+      }
 
-       const result= await listCollection.updateOne(query, updateList)
+      const result = await listCollection.updateOne(query, updateList)
 
-       res.send(result);
+      res.send(result);
 
       console.log(data);
-  
+
     })
 
+
+    // DELETE A LIST ITEM
+    app.delete('/list/:id', async (req, res) => {
+      const id = req.params.id;
+
+      const query = { _id: new ObjectId(id) };
+
+      const result = await listCollection.deleteOne(query);
+
+      res.send(result);
+    });
 
 
 
