@@ -29,6 +29,7 @@ async function run() {
     // database collection 
     const database = client.db('pawmartList');
     const listCollection = database.collection('lists');
+    const oderList = database.collection('oderList');
 
     // post or send data
     app.post('/addlist', async (req, res) => {
@@ -37,6 +38,13 @@ async function run() {
       const date = new Date();
       requestBody.createdAt = date;
       const result = await listCollection.insertOne(requestBody);
+      res.send({ message: "Received successfully", data: requestBody });
+    });
+
+    app.post('/addoder', async (req, res) => {
+      const requestBody = req.body;
+      //console.log(requestBody);
+      const result = await oderList.insertOne(requestBody);
       res.send({ message: "Received successfully", data: requestBody });
     });
 
